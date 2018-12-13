@@ -6,6 +6,9 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     private boolean running = false;
 
+    /**
+     * Constructor that creates the game window
+     */
     public Game() {
         new Window(Constants.GAME_NAME, this);
     }
@@ -31,6 +34,9 @@ public class Game extends Canvas implements Runnable{
         }
     }
 
+    /**
+     * Game loop which also measures frames per second
+     */
     public void run() {
         long lastTime = System.nanoTime();
         final double amountOfTicks = 60.0;
@@ -45,7 +51,7 @@ public class Game extends Canvas implements Runnable{
             lastTime = now;
 
             while(delta >= 1) {
-                tick();
+//                tick();
                 delta--;
             }
             if(running) {
@@ -61,9 +67,9 @@ public class Game extends Canvas implements Runnable{
         stop();
     }
 
-    private void tick() {
-
-    }
+//    private void tick() {
+//
+//    }
 
     /**
      * Renders image onto the screen, creates background colour
@@ -87,6 +93,10 @@ public class Game extends Canvas implements Runnable{
 
     }
 
+    /**
+     * Main method that is run to launch the game
+     * @param args
+     */
     public static void main(String args[]) {
         new Game();
     }
