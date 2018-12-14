@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class Window {
 
@@ -24,14 +26,23 @@ public class Window {
      */
     public JFrame createFrame(String title) {
 
-        JFrame frame = new JFrame(title);
+        frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(Constants.INITIAL_WIDTH, Constants.INITIAL_HEIGHT);
         frame.setUndecorated(false);
         frame.setVisible(true);
         frame.setResizable(false);
+        frame.setCursor(Cursor.CROSSHAIR_CURSOR);
+
 
         return frame;
     }
+
+    /**
+     * Closes the JFrame once the popup has been shown and the game has ended
+     */
+     public void closeGame() {
+         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+     }
 }
 

@@ -1,16 +1,23 @@
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game extends Canvas implements Runnable{
 
     private Thread thread;
+    private BlockHandler blockHandler;
+    private HUD hud;
     private boolean running = false;
+    private Window window;
 
     /**
      * Constructor that creates the game window
      */
     public Game() {
-        new Window(Constants.GAME_NAME, this);
+        blockHandler = new BlockHandler();
+        window = new Window(Constants.GAME_NAME, this);
+        hud = new HUD();
     }
 
     /**
@@ -35,15 +42,16 @@ public class Game extends Canvas implements Runnable{
     }
 
     /**
-     * Game loop which also measures frames per second
+     * Game loop which also measures time remaining
      */
     public void run() {
         long lastTime = System.nanoTime();
         final double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        int frames = 0;
-        long timer = System.currentTimeMillis();
+
+        startTimer();
+        spawnBoxes();
 
         while(running) {
             long now = System.nanoTime();
@@ -51,25 +59,59 @@ public class Game extends Canvas implements Runnable{
             lastTime = now;
 
             while(delta >= 1) {
-//                tick();
+                tick();
                 delta--;
             }
             if(running) {
                 render();
-                frames++;
-            }
-            if(System.currentTimeMillis() - timer > 1000) {
-                timer += 1000;
-                System.out.println("fps: " + frames);
-                frames = 0;
             }
         }
         stop();
     }
 
-//    private void tick() {
-//
-//    }
+    private void spawnBoxes() {
+
+        long interval = Constants.BLOCK_SPAWN_INTERVAL;
+        final int totalBoxes = (Constants.GAME_TIME * 1000) / Constants.BLOCK_SPAWN_INTERVAL;
+
+        Timer timer = new Timer();
+        TimerTask handleSpawn = new TimerTask() {
+            public void run() {
+                if(blockHandler.getNumBlocksSpawned() == totalBoxes) {
+                    cancel();
+                }
+                else {
+                    Block block = new Block();
+                    blockHandler.addBlock(block);
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(handleSpawn, 0, interval);
+    }
+
+    private void startTimer() {
+
+        long second = 1000L;
+
+        Timer timer = new Timer();
+        TimerTask handleSecond = new TimerTask() {
+            public void run() {
+                if(hud.getTimeRemaining() == 0) {
+                    cancel();
+                    //end game
+                }
+                else {
+                    hud.setTimeRemaining(hud.getTimeRemaining() - 1);
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(handleSecond, second, second);
+    }
+
+    private void tick() {
+        blockHandler.tick();
+        hud.tick();
+    }
 
     /**
      * Renders image onto the screen, creates background colour
@@ -85,8 +127,11 @@ public class Game extends Canvas implements Runnable{
 
         Graphics g = bs.getDrawGraphics();
 
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.fillRect(0, 0, Constants.INITIAL_WIDTH, Constants.INITIAL_HEIGHT);
+
+        hud.render(g);
+        blockHandler.render(g);
 
         g.dispose();
         bs.show();
