@@ -10,10 +10,8 @@ public class Block {
      * Constructor which automatically creates random co-ordinates for the block being created.
      */
     public Block() {
-        x = getRandomNumberInRange(0, Constants.INITIAL_WIDTH - Constants.BLOCK_LENGTH);
-        System.out.println("x is at " + x);
-        y = getRandomNumberInRange(100, Constants.INITIAL_HEIGHT - Constants.BLOCK_LENGTH);
-        System.out.println("y is at " + y);
+        x = getRandomNumberInRange(0, Constants.INITIAL_WIDTH - 2*Constants.BLOCK_LENGTH);
+        y = getRandomNumberInRange(100, Constants.INITIAL_HEIGHT - 2*Constants.BLOCK_LENGTH);
     }
 
     public void tick() {

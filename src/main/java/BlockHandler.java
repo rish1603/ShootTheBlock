@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.util.LinkedList;
-import java.util.Random;
 
 /**
  * Updates and renders all block objects
@@ -9,6 +8,8 @@ public class BlockHandler {
 
     protected int numBlocksKilled = 0;
     protected int numBlocksSpawned = 0;
+    private int mouseClickXpos;
+    private int mouseClickYpos;
 
     LinkedList<Block> blocks = new LinkedList<Block>();
 

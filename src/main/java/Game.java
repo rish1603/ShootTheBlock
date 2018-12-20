@@ -6,7 +6,7 @@ import java.util.TimerTask;
 public class Game extends Canvas implements Runnable{
 
     private Thread thread;
-    private BlockHandler blockHandler;
+    private BlockHandler handler;
     private HUD hud;
     private boolean running = false;
     private Window window;
@@ -15,7 +15,8 @@ public class Game extends Canvas implements Runnable{
      * Constructor that creates the game window
      */
     public Game() {
-        blockHandler = new BlockHandler();
+        handler = new BlockHandler();
+        this.addMouseListener(new MouseClickListener(handler));
         window = new Window(Constants.GAME_NAME, this);
         hud = new HUD();
     }
@@ -77,12 +78,12 @@ public class Game extends Canvas implements Runnable{
         Timer timer = new Timer();
         TimerTask handleSpawn = new TimerTask() {
             public void run() {
-                if(blockHandler.getNumBlocksSpawned() == totalBoxes) {
+                if(handler.getNumBlocksSpawned() == totalBoxes) {
                     cancel();
                 }
                 else {
                     Block block = new Block();
-                    blockHandler.addBlock(block);
+                    handler.addBlock(block);
                 }
             }
         };
@@ -109,7 +110,7 @@ public class Game extends Canvas implements Runnable{
     }
 
     private void tick() {
-        blockHandler.tick();
+        handler.tick();
         hud.tick();
     }
 
@@ -131,7 +132,7 @@ public class Game extends Canvas implements Runnable{
         g.fillRect(0, 0, Constants.INITIAL_WIDTH, Constants.INITIAL_HEIGHT);
 
         hud.render(g);
-        blockHandler.render(g);
+        handler.render(g);
 
         g.dispose();
         bs.show();

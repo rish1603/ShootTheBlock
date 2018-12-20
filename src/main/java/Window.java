@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 public class Window {
 
@@ -34,15 +33,7 @@ public class Window {
         frame.setResizable(false);
         frame.setCursor(Cursor.CROSSHAIR_CURSOR);
 
-
         return frame;
     }
 
-    /**
-     * Closes the JFrame once the popup has been shown and the game has ended
-     */
-     public void closeGame() {
-         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-     }
 }
-
