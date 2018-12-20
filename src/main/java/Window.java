@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class Window {
 
@@ -34,6 +35,16 @@ public class Window {
         frame.setCursor(Cursor.CROSSHAIR_CURSOR);
 
         return frame;
+
+    }
+
+    /**
+     * Ends the game and displays final score
+     * @param score final score for user
+     */
+    public void endGame(int score) {
+        JOptionPane.showMessageDialog(null, Constants.SCORE + score);
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 
 }

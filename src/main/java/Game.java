@@ -18,7 +18,7 @@ public class Game extends Canvas implements Runnable{
         handler = new BlockHandler();
         this.addMouseListener(new MouseClickListener(handler));
         window = new Window(Constants.GAME_NAME, this);
-        hud = new HUD();
+        hud = new HUD(handler);
     }
 
     /**
@@ -70,6 +70,11 @@ public class Game extends Canvas implements Runnable{
         stop();
     }
 
+    /**
+     * Begins the process of creating and displaying blocks. Works by creating a task
+     * that creates a block every X seconds, where X can be defined in:
+     * @see Constants To change variables e.g. difficulty or game timer duration
+     */
     private void spawnBoxes() {
 
         long interval = Constants.BLOCK_SPAWN_INTERVAL;
@@ -84,12 +89,17 @@ public class Game extends Canvas implements Runnable{
                 else {
                     Block block = new Block();
                     handler.addBlock(block);
+                    handler.setNumBlocksSpawned(handler.getNumBlocksSpawned() + 1);
                 }
             }
         };
         timer.scheduleAtFixedRate(handleSpawn, 0, interval);
+
     }
 
+    /**
+     * Starts in-game timer
+     */
     private void startTimer() {
 
         long second = 1000L;
@@ -99,7 +109,7 @@ public class Game extends Canvas implements Runnable{
             public void run() {
                 if(hud.getTimeRemaining() == 0) {
                     cancel();
-                    //end game
+                    window.endGame(handler.getNumBlocksKilled());
                 }
                 else {
                     hud.setTimeRemaining(hud.getTimeRemaining() - 1);
@@ -109,9 +119,11 @@ public class Game extends Canvas implements Runnable{
         timer.scheduleAtFixedRate(handleSecond, second, second);
     }
 
+    /**
+     * Methods that need to be invoked every game tick e.g. for hit detection
+     */
     private void tick() {
         handler.tick();
-        hud.tick();
     }
 
     /**

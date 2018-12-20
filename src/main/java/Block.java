@@ -3,19 +3,15 @@ import java.util.Random;
 
 public class Block {
 
-    protected int x;
-    protected int y;
+    private int x;
+    private int y;
 
     /**
      * Constructor which automatically creates random co-ordinates for the block being created.
      */
     public Block() {
-        x = getRandomNumberInRange(0, Constants.INITIAL_WIDTH - 2*Constants.BLOCK_LENGTH);
-        y = getRandomNumberInRange(100, Constants.INITIAL_HEIGHT - 2*Constants.BLOCK_LENGTH);
-    }
-
-    public void tick() {
-
+        setX(getRandomNumberInRange(0, Constants.INITIAL_WIDTH - 2*Constants.BLOCK_LENGTH));
+        setY(getRandomNumberInRange(100, Constants.INITIAL_HEIGHT - 2*Constants.BLOCK_LENGTH));
     }
 
     /**
@@ -27,7 +23,6 @@ public class Block {
         g.fillRect(x, y, Constants.BLOCK_LENGTH, Constants.BLOCK_LENGTH);
     }
 
-
     /**
      * Generates a random integer between two numbers. Used to position block.
      * @param min minimum random number
@@ -37,6 +32,22 @@ public class Block {
     private static int getRandomNumberInRange(int min, int max) {
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
 }

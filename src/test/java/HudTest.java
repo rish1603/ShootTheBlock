@@ -16,7 +16,8 @@ public class HudTest {
 
     @Before
     public void initMocks() {
-        hud = new HUD();
+        BlockHandler handler = new BlockHandler();
+        hud = new HUD(handler);
         MockitoAnnotations.initMocks(this);
     }
 
