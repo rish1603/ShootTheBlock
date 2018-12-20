@@ -34,18 +34,30 @@ public class Block {
         return r.nextInt((max - min) + 1) + min;
     }
 
+    /**
+     * @return block X co-ordinate
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * @param x initialises block X co-ordinate
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /**
+     * @return block Y co-ordinate
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * @param y initialises block Y co-ordinate
+     */
     public void setY(int y) {
         this.y = y;
     }
